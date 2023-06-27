@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Articles;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
@@ -22,8 +23,10 @@ class ArticlesCrudController extends AbstractCrudController
         return [
             TextField::new('title'),
             TextEditorField::new('content'),
-            ImageField::new('image')->setBasePath('/images/')->setUploadDir('public/images/')
-                ->setUploadedFileNamePattern('[year]-[month]-[day]-[slug]-[contenthash].[extension]'),
+            ImageField::new('image')->setBasePath('/images/')->setUploadDir('public/images/')->setUploadedFileNamePattern('[year]-[month]-[day]-[slug]-[contenthash].[extension]')->setRequired($pageName !== Crud::PAGE_EDIT)
+                ->setFormTypeOptions($pageName == Crud::PAGE_EDIT ? ['allow_delete' => false] : []),
+            // ImageField::new('image')->setBasePath('/images/')->setUploadDir('public/images/')
+            //     ->setUploadedFileNamePattern('[year]-[month]-[day]-[slug]-[contenthash].[extension]'),
             BooleanField::new('public'),
         ];
     }
