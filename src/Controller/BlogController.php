@@ -14,18 +14,18 @@ use Symfony\Component\HttpFoundation\Request;
 
 class BlogController extends AbstractController
 {
-    #[Route('/', name: 'app_blog')]
+    #[Route('/', name: 'app_accueil')]
+    public function accueil(): Response
+    {
+        return $this->render('blog/index.html.twig', []);
+    }
+    #[Route('/blog', name: 'app_blog')]
     public function index(EntityManagerInterface $entityManager): Response
     {
         $articles = $entityManager->getRepository(Articles::class)->findAll();
-        return $this->render('blog/index.html.twig', ['articles' => $articles]);
-    }
-    #[Route('/blog', name: 'app_blog2')]
-    public function blog(ArticlesRepository $repo): Response
-    {
-        $liste = $repo->findAll();
         return $this->render('blog/blog.html.twig', [
-            'list_article' => $liste,
+            'articles' => $articles,
+
         ]);
     }
 
@@ -41,7 +41,7 @@ class BlogController extends AbstractController
     public function consultations(): Response
     {
         return $this->render('blog/consultations.html.twig', [
-            'controller_name' => 'BlogController',
+            'controller_name' => 'Consultations',
         ]);
     }
 
